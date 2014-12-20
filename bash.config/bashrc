@@ -1,0 +1,38 @@
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# envs
+export SBCL_HOME=/usr/lib64/sbcl/
+# golang
+export GOPATH=/home/kubov/code/golang
+
+# Intel IPP
+export IPP_INC=/opt/intel/composerxe/ipp/include
+export IPP_SHARED="/opt/intel/ipp/lib/intel64/:/opt/intel/lib/intel64/"
+export IPP_LIBS="ippcore ippi ipps ippcc ippcv iomp5"
+export IPP_LINK=-pthread
+
+# easyVision
+export EASYVISION=/home/kubov/code/not_mine/easyVision/
+export LD_LIBRARY_PATH=$IPP_SHARED:$EASYVISION/lib/lib32
+PATH=$PATH:/home/kubov/math/bin/:/home/kubov/gocode/bin/:/home/kubov/code/utils/:$GOPATH/bin
+
+# aliases
+alias fetch="sudo tail -f /var/log/emerge-fetch.log"
+alias arm="source ~/.armtoolkit"
+alias noise="aplay /dev/urandom -f cdr"
+alias ida="wine ~/ida61/idaq.exe"
+
+[ -e ~/.git-prompt.sh ] && source ~/.git-prompt.sh;
+
+PS1="\[\e[1;32m\]\W\[\033[m\]\[\e[0;32m\]\$(__git_ps1) \[\e[1;35m\]λ \[\e[0;37m\]"
+
+# utils
+h2d(){
+  echo "ibase=16; $@"|bc
+}
+d2h(){
+  echo "obase=16; $@"|bc
+}
