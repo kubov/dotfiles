@@ -1,0 +1,16 @@
+#pacmd set-sink-mute 1 false
+#echo "0" > ~/.pulse/muted
+
+ps -A | grep redshift
+if [ $? == 1 ]; then redshift -l 52:16 -t 15000:3000 & fi
+
+feh ~/wallpapers/o1562569.jpg --bg-fill
+
+SBCL_HOME=/usr/lib/sbcl
+pulseaudio --start &
+xset +fp /usr/share/fonts/local/
+setxkbmap pl
+xmodmap ~/.Xmodmap
+synclient TapButton1=1
+wmname LG3D
+parcellite &
