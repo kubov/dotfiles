@@ -27,7 +27,7 @@ alias ida="wine ~/ida61/idaq.exe"
 
 [ -e ~/.git-prompt.sh ] && source ~/.git-prompt.sh;
 
-PS1="\h \[\e[1;32m\]\W\[\033[m\]\[\e[0;32m\]\$(__git_ps1) \[\e[1;35m\]λ \[\e[0;37m\]"
+PS1="\h \[\e[1;32m\]\W\[\e[1;31m\]\[\e[0;32m\]\$(__git_ps1) \[\e[1;35m\]λ \[\e[0;37m\]"
 
 # utils
 h2d(){
