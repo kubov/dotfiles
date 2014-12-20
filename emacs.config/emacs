@@ -1,0 +1,172 @@
+;;load all in ~/emacs
+(add-to-list 'load-path "~/emacs-config")
+
+(require 'package)
+
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+
+(package-initialize)
+; start auto-complete with emacs
+(require 'auto-complete)
+(require 'dirtree)
+; do default config for auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
+; start yasnippet with emacs
+(require 'yasnippet)
+(yas-global-mode 1)
+(require 'auto-complete-clang-async)
+
+;;end
+(defun ac-cc-mode-setup ()
+  (setq ac-clang-complete-executable "~/emacs/clang-complete")
+  (setq ac-sources '(ac-source-clang-async))
+  (setq ac-clang-cflags '("-I/usr/include/qt4/" "-I/home/kubov/code/hordion/frontend/src" "-I/usr/include/qt4/Qt" "-I/usr/include/qt4/QtCore"))
+  (ac-clang-launch-completion-process)
+)
+
+(defun my-ac-config ()
+  (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+  (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+  (global-auto-complete-mode t))
+
+(my-ac-config)
+
+;(require 'auto-complete-clang)
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources))))
+
+;; Add Qt4 includes to load path if installed
+;; ;; (setq qt-dir "/usr/local/Cellar/qt/4.8.3/include/")
+(setq qt-dir "/usr/include/qt4/")
+
+;; (when (file-exists-p qt-dir)
+;;   (setq ac-clang-flags
+;;         (mapcar (lambda (f) (concat "-I" f))
+;;                 (directory-files qt-dir t "Qt\\w+"))))
+
+;;font
+(custom-set-faces '(default ((t (:family "Terminus")))) '(hl-paren-face ((t (:weight ultra-bold))) t))
+
+;;theme
+(require 'spolsky-theme)
+
+;;keys
+(global-set-key (kbd "<f9>") 'compile)
+(global-set-key (kbd "<f8>") 'gdb)
+(global-set-key (kbd "<f5>") 'next-error)
+(global-set-key (kbd "<f6>") 'previous-error)
+(global-set-key (kbd "<f7>") 'shell)
+(global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-o") 'other-window)
+(global-set-key (kbd "C-c w") 'whitespace-mode)
+(global-set-key (kbd "C-c a") 'mark-whole-buffer)
+
+;;look
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(ido-mode)
+(icomplete-mode)
+(global-linum-mode 1)
+(nyan-mode 1)
+(nyan-start-animation)
+(auto-complete-mode)
+
+;;behaviour
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+(global-auto-complete-mode t)
+(semantic-mode)
+(server-start)
+(require 'auto-complete-config)
+(setq-default ac-sources '(ac-source-semantic-raw))
+;(column-marker-3 80)
+;;vars
+(setq auto-insert-mode t
+      backup-directory-alist (list (cons ".*" (expand-file-name "~/.backups/")))
+      browse-url-browser-function (quote browse-url-generic)
+      browse-url-generic-program "firefox-bin"
+      compilation-window-height 15
+      compilation-scroll-output t
+      dabbrev-case-distinction t
+      dabbrev-case-fold-search t
+      dabbrev-case-replace t
+      dabbrev-upcase-means-case-search t
+      eldoc-argument-case (quote downcase)
+      eldoc-idle-delay 0.1
+      imaxima-tex-program "latex"
+      inhibit-splash-screen t
+      initial-buffer-choice "~/"
+      ispell-dictionary "pl"
+      ispell-local-dictionary-alist nil
+      ispell-program-name "/usr/bin/aspell"
+      list-directory-brief-switches "-CFX --group-directories-first"
+      list-directory-verbose-switches "-lX --group-directories-first"
+      longlines-wrap-follows-window-size t
+      message-generate-headers-first (quote (t))
+      pascal-auto-lineup nil
+      pascal-indent-nested-functions nil
+      pascal-tab-always-indent nil
+      safe-local-variable-values (quote ((Syntax . Common-Lisp) (Base . 10) (Syntax . ANSI-Common-Lisp) (Syntax . Common-Lisp)))
+      slime-complete-symbol-function (quote slime-fuzzy-complete-symbol)
+      spell-command "aspell"
+      w3m-use-cookies t)
+
+
+;;;LANGUAGES
+;;c/c++
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+
+(defun vlad-cc-style()
+  (c-set-style "linux")
+  (c-set-offset 'innamespace '0)
+  (c-set-offset 'inextern-lang '0)
+  (c-set-offset 'inline-open '0)
+  (c-set-offset 'label '*)
+  (c-set-offset 'case-label '*)
+  (c-set-offset 'access-label '/)
+  (setq c-basic-offset 4)
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil))
+
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cxx\\'" . c++-mode))
+(add-hook 'c++-mode-hook (lambda () (vlad-cc-style) (auto-complete-mode)))
+(add-hook 'c-mode-hook (lambda () (vlad-cc-style) (auto-complete-mode)))
+
+;; show unncessary whitespace that can mess up your diff
+(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+
+;;haskell
+(add-hook 'haskell-mode-hook (lambda () (haskell-indentation-mode)
+                               (auto-complete-mode)))
+(require 'ac-haskell-process) ; if not installed via package.el
+(add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
+(add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'haskell-interactive-mode))
+(defun set-auto-complete-as-completion-at-point-function ()
+  (add-to-list 'completion-at-point-functions 'auto-complete))
+(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-to-list 'ac-modes 'haskell-interactive-mode)
+(add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
+;;lisp
+(setf inferior-lisp-program "sbcl")
+
+;;java
+(add-hook 'java-mode-hook 'vlad-cc-style)
+
+;fix dired C-o override
+(add-hook 'dired-mode-hook
+  (lambda ()
+    (define-key dired-mode-map (kbd "C-o") nil)))
