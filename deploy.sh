@@ -23,8 +23,7 @@ function migrate {
 	fi
     fi
 
-
-    echo [*]Migrating $src to $dest
+    echo [*] Migrating $src to $dest
     ln -s $(pwd)/$src $dest
 }
 
