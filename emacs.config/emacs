@@ -51,7 +51,8 @@
 (custom-set-faces '(default ((t (:family "Terminus")))) '(hl-paren-face ((t (:weight ultra-bold))) t))
 
 ;;theme
-(require 'spolsky-theme)
+(if window-system
+  (require 'spolsky-theme))
 
 ;;keys
 (global-set-key (kbd "<f9>") 'compile)
