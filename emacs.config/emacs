@@ -19,13 +19,11 @@
 (yas-global-mode 1)
 (require 'auto-complete-clang-async)
 
-;;end
 (defun ac-cc-mode-setup ()
   (setq ac-clang-complete-executable "~/emacs/clang-complete")
   (setq ac-sources '(ac-source-clang-async))
   (setq ac-clang-cflags '("-I/usr/include/qt4/" "-I/home/kubov/code/hordion/frontend/src" "-I/usr/include/qt4/Qt" "-I/usr/include/qt4/QtCore"))
-  (ac-clang-launch-completion-process)
-)
+  (ac-clang-launch-completion-process))
 
 (defun my-ac-config ()
   (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
@@ -79,6 +77,7 @@
 (auto-complete-mode)
 
 ;;behaviour
+(cua-mode t)
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 (global-auto-complete-mode t)
