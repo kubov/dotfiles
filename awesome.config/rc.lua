@@ -177,13 +177,12 @@ function battery_update()
    fh:close()
 end
 
-batterywidget = wibox.widget.textbox()
-batterywidget:set_text(" | Battery | ")
-battery_update()
-batterywidgettimer = timer({ timeout = 5 })
-batterywidgettimer:connect_signal("timeout", battery_update)
-
 if utils.file_exists('/proc/acpi/battery/BAT0/info') then
+   batterywidget = wibox.widget.textbox()
+   batterywidget:set_text(" | Battery | ")
+   battery_update()
+   batterywidgettimer = timer({ timeout = 5 })
+   batterywidgettimer:connect_signal("timeout", battery_update)
    batterywidgettimer:start()
 end
 
@@ -217,7 +216,7 @@ for s = 1, screen.count() do
    local right_layout = wibox.layout.fixed.horizontal()
    if s == 1 then right_layout:add(wibox.widget.systray()) end
    right_layout:add(mytextclock)
-   right_layout:add(batterywidget)
+   if utils.file_exists('/proc/acpi/battery/BAT0/info') then right_layout:add(batterywidget) end
    right_layout:add(mylayoutbox[s])
 
    -- Now bring it all together (with the tasklist in the middle)
