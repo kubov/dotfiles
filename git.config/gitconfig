@@ -1,0 +1,6 @@
+[user]
+	email = kubov2@gmail.com
+	name = kubov
+[alias]
+	pom = push origin master
+	c = checkout
