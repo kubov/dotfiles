@@ -45,6 +45,11 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+theme.font = "Terminus 9"
+theme.border_width  = 3
+theme.border_normal = "#000000"
+theme.border_focus  = "#161a1f"
+theme.border_marked = "#91231c"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xfce4-terminal"
