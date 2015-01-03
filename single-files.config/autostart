@@ -4,7 +4,7 @@
 ps -A | grep redshift
 if [ $? == 1 ]; then redshift -l 52:16 -t 4500:3000 & fi
 
-feh ~/wallpapers/o1562569.jpg --bg-fill
+feh ~/.wlp.jpg --bg-fill
 
 SBCL_HOME=/usr/lib/sbcl
 pulseaudio --start &
